@@ -6,7 +6,7 @@ import {MainComponent} from "../main/main.component";
 export const routes: Routes = [
   {
     path:'',
-    component: MainComponent,
+    component: HomeComponent,
   },
   {
     path: 'app',
@@ -14,11 +14,9 @@ export const routes: Routes = [
     data: {
       requiresAuth: true,
     },
+    component: MainComponent,
     children: [
-      {
-        path:'',
-        component:HomeComponent,
-      },
+
       // TODO : Define a parent Form Component, inherit the component to create, view / edit
       {
         path:'create',

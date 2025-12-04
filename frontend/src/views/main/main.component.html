@@ -1,1 +1,15 @@
-<p>main works!</p>
+  <aside class="sidebar">
+
+    <nav class="nav-links">
+      <a routerLink="/app" routerLinkActive="active">Home</a>
+      <a routerLink="/app/create" routerLinkActive="active">Create</a>
+      <a routerLink="/app/view" routerLinkActive="active">View</a>
+      <a routerLink="/app/list" routerLinkActive="active">List</a>
+    </nav>
+
+    <button class="signout-btn">Sign Out</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
