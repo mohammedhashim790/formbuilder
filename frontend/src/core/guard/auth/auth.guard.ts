@@ -7,6 +7,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (requiresAuth ?? false) {
     // TODO, check if user is authorised, if not redirect to sign in
     // router.navigate(['/login']);
+    // return false;
   }
   return true;
 };

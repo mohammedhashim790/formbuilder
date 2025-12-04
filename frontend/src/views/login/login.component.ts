@@ -1,12 +1,49 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgIf} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    RouterLink
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
 
+  loginForm: FormGroup;
+  isSubmitting = false;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false],
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    // Simulate login
+    setTimeout(() => {
+      console.log(this.loginForm.value);
+      this.isSubmitting = false;
+    }, 1000);
+  }
+
+  hasError(controlName: string, error: string): boolean {
+    const ctrl = this.loginForm.get(controlName);
+    return !!ctrl && ctrl.touched && ctrl.hasError(error);
+  }
 }
