@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListFormComponent } from './list-form.component';
+import { ListForm } from './list-form';
 
-describe('ListFormComponent', () => {
-  let component: ListFormComponent;
-  let fixture: ComponentFixture<ListFormComponent>;
+describe('ListForm', () => {
+  let component: ListForm;
+  let fixture: ComponentFixture<ListForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListFormComponent]
+      imports: [ListForm]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(ListFormComponent);
+
+    fixture = TestBed.createComponent(ListForm);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-sign-in',
   standalone: true,
   imports: [],
-  templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.css'
+  templateUrl: './sign-in.html',
+  styleUrl: './sign-in.css'
 })
-export class SignInComponent {
+export class SignIn {
 
 }

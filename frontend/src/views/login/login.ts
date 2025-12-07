@@ -11,10 +11,10 @@ import {RouterLink} from "@angular/router";
     NgIf,
     RouterLink
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './login.html',
+  styleUrl: './login.css'
 })
-export class LoginComponent {
+export class Login {
 
   loginForm: FormGroup;
   isSubmitting = false;

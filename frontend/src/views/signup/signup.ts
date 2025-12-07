@@ -9,9 +9,9 @@ import {RouterLink} from "@angular/router";
     FormsModule,
     RouterLink
   ],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  templateUrl: './signup.html',
+  styleUrl: './signup.css'
 })
-export class SignupComponent {
+export class Signup {
 
 }

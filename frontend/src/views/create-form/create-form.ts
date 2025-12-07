@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-create-form',
   standalone: true,
   imports: [],
-  templateUrl: './create-form.component.html',
-  styleUrl: './create-form.component.css'
+  templateUrl: './create-form.html',
+  styleUrl: './create-form.css'
 })
-export class CreateFormComponent {
+export class CreateForm {
 
 }
