@@ -1,26 +1,43 @@
-<table class="table-auto md:table-auto">
-  <thead>
-  <tr>
-    <th>Song</th>
-    <th>Artist</th>
-    <th>Year</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-    <td>Malcolm Lockyer</td>
-    <td>1961</td>
-  </tr>
-  <tr>
-    <td>Witchy Woman</td>
-    <td>The Eagles</td>
-    <td>1972</td>
-  </tr>
-  <tr>
-    <td>Shining Star</td>
-    <td>Earth, Wind, and Fire</td>
-    <td>1975</td>
-  </tr>
-  </tbody>
-</table>
+<button matButton style="width: max-content">
+  Create new form
+</button>
+
+
+<ng-container>
+  <h2 matListItemTitle>
+    Forms
+  </h2>
+
+  <mat-divider></mat-divider>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Form Name">
+      <th mat-header-cell *matHeaderCellDef>Form Name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.formName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Form Link">
+      <th mat-header-cell *matHeaderCellDef>Link</th>
+      <td mat-cell *matCellDef="let element">
+        <a [href]="element.link" target="_blank"> link </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Created At">
+      <th mat-header-cell *matHeaderCellDef>Created At</th>
+      <td mat-cell *matCellDef="let element"> {{ element.created_at | date:'medium' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-container>

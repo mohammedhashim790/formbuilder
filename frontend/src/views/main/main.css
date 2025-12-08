@@ -42,7 +42,7 @@
 
 .active {
   background: #e8f0fe;
-  color: #2f80ed !important;
+  /*color: #2f80ed !important;*/
 }
 
 .signout-btn {
