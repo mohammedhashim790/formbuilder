@@ -7,3 +7,7 @@
 .terraform.*
 .terraform/
 terraform.*
+
+
+.env
+/node_modules/
