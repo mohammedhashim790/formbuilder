@@ -3,7 +3,7 @@ const {v4: uuidv4} = require('uuid');
 const {
     PutCommand, GetCommand, DeleteCommand,
 } = require('@aws-sdk/lib-dynamodb');
-const {docClient} = require('../db/dynamo');
+const {docClient} = require('../core/dynamo');
 
 const router = express.Router();
 const TABLE = process.env.ASSETS_TABLE;
