@@ -23,7 +23,68 @@ export class CanvasBuilder {
   // dynamic callback handler for different actions
   //  1. on pointerdown
   //  2. on move
-  // protected
+
+  protected onPointerDown(event: MouseEvent): void {
+    console.log(event);
+
+    // Mac cmd / Windows Ctrl + left pointer click to move
+    if (event.ctrlKey && event.button == 0) {
+    //   activate pan action
+    }
+  }
+
+  protected onPointerUp(event: MouseEvent): void {
+    console.log(event);
+
+    // if pan enabled -> disable
+  }
+
+  protected onPointerMove(event: MouseEvent): void {
+    console.log(event);
+    // if pan move around
+  }
+
+
+  // private drawHandles(shape: RectShape): void {
+  //   const ctx = this.ctx;
+  //   const size = 8;
+  //
+  //   const corners = [{x: shape.x, y: shape.y}, {x: shape.x + shape.width, y: shape.y}, {
+  //     x: shape.x, y: shape.y + shape.height
+  //   }, {x: shape.x + shape.width, y: shape.y + shape.height},];
+  //
+  //   ctx.fillStyle = '#ffffff';
+  //   ctx.strokeStyle = '#2563eb';
+  //
+  //   for (const c of corners) {
+  //     ctx.beginPath();
+  //     ctx.rect(c.x - size / 2, c.y - size / 2, size, size);
+  //     ctx.fill();
+  //     ctx.stroke();
+  //   }
+  // }
+
+  // protected getShapeById(id: string | null): RectShape | null {
+  //   if (!id) return null;
+  //   return this.shapes.find((s) => s.id === id) ?? null;
+  // }
+
+  // protected hitTestHandle(shape: RectShape, x: number, y: number): ResizeHandle {
+  //   const handleSize = 10;
+  //
+  //   const corners: { key: ResizeHandle; cx: number; cy: number }[] = [{key: 'tl', cx: shape.x, cy: shape.y}, {
+  //     key: 'tr', cx: shape.x + shape.width, cy: shape.y
+  //   }, {key: 'bl', cx: shape.x, cy: shape.y + shape.height}, {
+  //     key: 'br', cx: shape.x + shape.width, cy: shape.y + shape.height
+  //   },];
+  //
+  //   for (const c of corners) {
+  //     if (x >= c.cx - handleSize && x <= c.cx + handleSize && y >= c.cy - handleSize && y <= c.cy + handleSize) {
+  //       return c.key;
+  //     }
+  //   }
+  //   return null;
+  // }
 
 
   protected onWheel(event: WheelEvent) {

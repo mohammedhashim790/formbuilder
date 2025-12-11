@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, ElementRef, ViewChild,} from '@angular/core';
+import {CanvasBuilder} from '../../core/draw-board/canvas/canvas-builder';
 
 type Tool = 'select' | 'rect';
 
@@ -12,11 +13,11 @@ export class DrawingBoard implements AfterViewInit {
 
   @ViewChild('textInput', {static: false}) textInputRef!: ElementRef<HTMLInputElement>;
 
-  activeTool: Tool = 'rect';
-
   private ctx!: CanvasRenderingContext2D;
 
   private canvas!: HTMLCanvasElement;
+
+  private canvasBuilder!: CanvasBuilder;
 
 
   ngAfterViewInit(): void {
@@ -24,6 +25,7 @@ export class DrawingBoard implements AfterViewInit {
 
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
 
+    this.canvasBuilder = new CanvasBuilder(this.canvas, this.ctx);
     this.draw();
   }
 
