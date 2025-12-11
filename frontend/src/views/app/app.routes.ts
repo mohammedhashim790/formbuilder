@@ -8,6 +8,7 @@ export const routes: Routes = [
   {
     path:'',
     component: Home,
+    canActivateChild:[authGuard]
   },
   {
     path: 'app',

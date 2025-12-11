@@ -50,8 +50,7 @@ async function signOutUser({accessToken}) {
         AccessToken: accessToken,
     });
 
-    const out = await client.send(cmd);
-    return out;
+    return await client.send(cmd);
 }
 
 module.exports = {

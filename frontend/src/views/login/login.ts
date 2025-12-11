@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {AuthService} from '../../services/auth/auth.service';
+import {routes} from '../app/app.routes';
 
 @Component({
   selector: 'app-login',
@@ -12,33 +14,23 @@ import {RouterLink} from "@angular/router";
 export class Login {
 
   loginForm: FormGroup;
-  isSubmitting = false;
+
+  authService: AuthService = inject(AuthService);
+
+  router: Router = inject(Router);
 
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false],
     });
   }
 
-  onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+  protected async signIn() {
+    if (this.loginForm.invalid) return;
+    const res = await this.authService.signIn(this.loginForm.value);
 
-    this.isSubmitting = true;
 
-    // Simulate login
-    setTimeout(() => {
-      console.log(this.loginForm.value);
-      this.isSubmitting = false;
-    }, 1000);
-  }
-
-  hasError(controlName: string, error: string): boolean {
-    const ctrl = this.loginForm.get(controlName);
-    return !!ctrl && ctrl.touched && ctrl.hasError(error);
+    this.router.navigate(['/app']);
   }
 }
