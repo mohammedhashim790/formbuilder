@@ -1,0 +1,65 @@
+<form class="card content" [formGroup]="formGroup" (ngSubmit)="submit()">
+  <div class="card">
+    <h2 class="title">{{ sampleResponse.name }}</h2>
+    <p class="muted">{{ sampleResponse.desc }}</p>
+  </div>
+
+  @for (f of fields(); track f.title; let index = $index) {
+    <div class="card">
+      <div class="head">
+        <h3 class="qtitle">
+          {{ f.title }}
+          @if (f.isRequired) { <span class="req">*</span> }
+        </h3>
+        <div class="muted">{{ f.desc }}</div>
+      </div>
+
+      @switch (f.type) {
+        @case ('text') {
+          <input
+            class="plain"
+            type="text"
+            [placeholder]="f.title"
+            [formControlName]="fieldKey(index)"
+          />
+          @if (hasError(index, 'required')) {
+            <div class="err">This field is required.</div>
+          }
+        }
+
+        @case ('select') {
+          <select class="plain" [formControlName]="fieldKey(index)">
+            <option value="" disabled selected>Select</option>
+            @for (opt of (f.options ?? []); track opt) {
+              <option [value]="opt">{{ opt }}</option>
+            }
+          </select>
+          @if (hasError(index, 'required')) {
+            <div class="err">This field is required.</div>
+          }
+        }
+
+        @case ('checkbox') {
+          <div class="stack" [formArrayName]="fieldKey(index)">
+            @for (opt of (f.options ?? []); track opt; let oi = $index) {
+              <label class="opt">
+                <input type="checkbox" [formControlName]="oi" />
+                <span>{{ opt }}</span>
+              </label>
+            }
+          </div>
+          @if (hasError(index, 'required')) {
+            <div class="err">Select at least one option.</div>
+          }
+        }
+      }
+    </div>
+  }
+
+  <div class="card actions">
+    <button class="btn" type="submit" [disabled]="formGroup.invalid">Submit</button>
+    @if (submitted) {
+      <div class="ok">Saved.</div>
+    }
+  </div>
+</form>

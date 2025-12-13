@@ -39,6 +39,11 @@ export const routes: Routes = [
         path:'view',
         loadComponent: ()=> import('../create-form/create-form').then(m => m.CreateForm),
       },
+      {
+        path:'form',
+        loadComponent: ()=> import('../form/form').then(m => m.Form),
+      },
+
     ]
   },
   {

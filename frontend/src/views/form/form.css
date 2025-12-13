@@ -1,0 +1,92 @@
+.content {
+  display: grid;
+  gap: 12px;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 14px;
+}
+
+
+.card {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+  font-weight: 900;
+}
+
+.muted {
+  color: #bdbdbd;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+
+.stack {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.opt {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: start;
+}
+
+.opt input {
+  width: 16px;
+  height: 16px;
+}
+
+.head {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.qtitle {
+  margin: 0;
+  font-weight: 900;
+}
+
+.req {
+  opacity: 0.9;
+  margin-left: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn {
+  border: 1px solid #2b2b2b;
+  background: #141414;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.err {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #bdbdbd;
+  opacity: 0.9;
+}
+
+.ok {
+  font-size: 12px;
+  color: #bdbdbd;
+}
