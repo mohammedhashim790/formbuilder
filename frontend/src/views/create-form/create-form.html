@@ -19,16 +19,22 @@
           <textarea class="plain text-plain"></textarea>
         </div>
 
-        @for (field of form; track field.field; let index = $index) {
+        @for (field of fieldValues; track field.type; let index = $index) {
           <div class="card">
             <span class="action">
               <span>
                  <div class="drag" cdkDragHandle title="Drag to reorder">⋮⋮</div>
                 <h3>
-                  {{ field.field | titlecase }}
+                  {{ field.type | titlecase }}
                 </h3>
               </span>
               <span>
+                <div style="flex-direction: row;margin: 0px 10px">
+                  <input class="pk" [id]="`required-set-${index}`" type="checkbox">
+                  <label [for]="`required-set-${index}`">
+                    Required
+                  </label>
+                </div>
                 <button matIconButton (click)="removeField(index)">
                     <mat-icon>
                       cancel
@@ -38,14 +44,20 @@
             </span>
             <input class="plain" placeholder="Title"/>
             <textarea class="plain text-plain" placeholder="Description"></textarea>
-            @switch (field.field) {
+            @switch (field.type) {
               @case ('text') {
 
               }
               @case ('checkbox') {
-                <span class="action">
+                <span style="justify-content: space-between;flex-direction: row">
+                  <label>
+                    Options
+                  </label>
+                  <button matIconButton><mat-icon>add</mat-icon></button>
+                </span>
+                <span class=" action">
                   <input class="plain">
-                   <button matIconButton>
+                  <button matIconButton>
                     <mat-icon>
                       delete
                     </mat-icon>
@@ -53,6 +65,12 @@
                 </span>
               }
               @case ('select') {
+                <span style="justify-content: space-between;flex-direction: row">
+                  <label>
+                    Options
+                  </label>
+                  <button matIconButton><mat-icon>add</mat-icon></button>
+                </span>
                 <span class="action">
                   <input class="plain">
                   <button matIconButton>
@@ -70,50 +88,45 @@
       </div>
 
 
-      <aside class="card prop">
-        <h3>
-          Properties
-        </h3>
-        <span>
-          <small>
-            Field Type
-          </small>
-          <!--      TODO    add dynamic field types here-->
-          <select>
-            <option>
-              Text
-            </option>
-            <option>
-              CheckBox
-            </option>
-            <option>
-              Select
-            </option>
-          </select>
-        </span>
+      <!--      <aside class="card prop">-->
+      <!--        <h3>-->
+      <!--          Properties-->
+      <!--        </h3>-->
+      <!--        <span>-->
+      <!--          <small>-->
+      <!--            Field Type-->
+      <!--          </small>-->
+      <!--          &lt;!&ndash;      TODO    add dynamic field types here&ndash;&gt;-->
+      <!--          <select class="plain">-->
+      <!--            <option>-->
+      <!--              Text-->
+      <!--            </option>-->
+      <!--            <option>-->
+      <!--              CheckBox-->
+      <!--            </option>-->
+      <!--            <option>-->
+      <!--              Select-->
+      <!--            </option>-->
+      <!--          </select>-->
+      <!--        </span>-->
 
-        <span>
-          <small>
-            Key
-          </small>
-          <input>
-        </span>
+      <!--        <span>-->
+      <!--          <small>-->
+      <!--            Key-->
+      <!--          </small>-->
+      <!--          <input class="plain">-->
+      <!--        </span>-->
 
-        <span>
-          <small>
-            Options
-          </small>
-          <span class="conf">
-            <input class="pk" id="required-set" type="checkbox">
-            <label for="required-set">
-              Required
-            </label>
-          </span>
+      <!--        <span>-->
+      <!--          <small>-->
+      <!--            Options-->
+      <!--          </small>-->
+      <!--          -->
 
-        </span>
+      <!--        </span>-->
 
 
-      </aside>
+      <!--      </aside>-->
 
     </div>
   </mat-tab>
