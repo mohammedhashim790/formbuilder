@@ -45,6 +45,8 @@ export class Form {
       options: ['Option 1', 'Option 2 ', 'Option 3'],
       isRequired: false,
       desc: 'Choose option'
+    }, {
+      type: 'email', title: 'Email', isRequired: false, desc: 'Enter Email',
     }]
   };
 
@@ -112,6 +114,8 @@ export class Form {
       }
 
       const validators = f.isRequired ? [Validators.required] : [];
+
+      if (f.type === 'email') validators.push(Validators.email);
       group[key] = this.fb.control<string>('', {nonNullable: true, validators});
     });
 

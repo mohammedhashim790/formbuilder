@@ -82,8 +82,9 @@
 .err {
   margin-top: 8px;
   font-size: 12px;
-  color: #bdbdbd;
+  color: darkred;
   opacity: 0.9;
+
 }
 
 .ok {

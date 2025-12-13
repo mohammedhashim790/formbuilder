@@ -9,7 +9,9 @@
       <div class="head">
         <h3 class="qtitle">
           {{ f.title }}
-          @if (f.isRequired) { <span class="req">*</span> }
+          @if (f.isRequired) {
+            <span class="req">*</span>
+          }
         </h3>
         <div class="muted">{{ f.desc }}</div>
       </div>
@@ -26,7 +28,21 @@
             <div class="err">This field is required.</div>
           }
         }
+        @case ('email') {
+          <input
+            class="plain"
+            type="email"
+            [placeholder]="f.title"
+            [formControlName]="fieldKey(index)"
+          />
+          @if (hasError(index, 'required')) {
+            <div class="err">This field is required.</div>
+          }
+          @if (hasError(index, 'email')) {
+            <div class="err">This is not a valid email.</div>
+          }
 
+        }
         @case ('select') {
           <select class="plain" [formControlName]="fieldKey(index)">
             <option value="" disabled selected>Select</option>
@@ -38,12 +54,11 @@
             <div class="err">This field is required.</div>
           }
         }
-
         @case ('checkbox') {
           <div class="stack" [formArrayName]="fieldKey(index)">
             @for (opt of (f.options ?? []); track opt; let oi = $index) {
               <label class="opt">
-                <input type="checkbox" [formControlName]="oi" />
+                <input type="checkbox" [formControlName]="oi"/>
                 <span>{{ opt }}</span>
               </label>
             }
