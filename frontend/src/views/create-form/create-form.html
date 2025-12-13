@@ -1,8 +1,17 @@
-<button matButton style="margin-left: auto" (click)="onSubmit()">
-  Publish
-</button>
+<header>
 
-<mat-tab-group>
+  <h2>
+    {{ this.formGroup.get('name')?.value }}
+  </h2>
+
+  <button matButton style="margin-left: auto" (click)="onSubmit()">
+    Publish
+  </button>
+</header>
+
+<mat-tab-group tabindex="1">
+
+
   <mat-tab label="Editor">
     <div class="view-port">
       <aside class="card toolbar">
@@ -19,33 +28,33 @@
 
       <form class="card content" [formGroup]="formGroup">
         <div class="card">
-          <input class="plain" formControlName="name"/>
-          <textarea class="plain text-plain" formControlName="desc"></textarea>
+          <input class="plain" placeholder="Form Name" formControlName="name"/>
+          <textarea class="plain text-plain" placeholder="Description" formControlName="desc"></textarea>
         </div>
 
         @for (field of field.controls; track field.value; let index = $index) {
           <div class="card" [formGroup]="field">
-            <span class="action">
-              <span>
-                 <div class="drag" cdkDragHandle title="Drag to reorder">⋮⋮</div>
-                <h3>
-                  {{ field.get('type')?.value | titlecase }}
-                </h3>
+              <span class="action">
+                <span>
+                   <div class="drag" cdkDragHandle title="Drag to reorder">⋮⋮</div>
+                  <h3>
+                    {{ field.get('type')?.value | titlecase }}
+                  </h3>
+                </span>
+                <span>
+                  <div style="flex-direction: row;margin: 0 10px">
+                    <input class="pk" [id]="`required-set-${index}`" formControlName="isRequired" type="checkbox">
+                    <label [for]="`required-set-${index}`">
+                      Required
+                    </label>
+                  </div>
+                  <button matIconButton (click)="removeField(index)">
+                      <mat-icon>
+                        cancel
+                      </mat-icon>
+                    </button>
+                </span>
               </span>
-              <span>
-                <div style="flex-direction: row;margin: 0 10px">
-                  <input class="pk" [id]="`required-set-${index}`" formControlName="isRequired" type="checkbox">
-                  <label [for]="`required-set-${index}`">
-                    Required
-                  </label>
-                </div>
-                <button matIconButton (click)="removeField(index)">
-                    <mat-icon>
-                      cancel
-                    </mat-icon>
-                  </button>
-              </span>
-            </span>
             <input class="plain" placeholder="Title" formControlName="title"/>
             <textarea class="plain text-plain" placeholder="Description" formControlName="desc"></textarea>
             @switch (field.get('type')?.value) {
@@ -54,38 +63,38 @@
               }
               @case ('checkbox') {
                 <span style="justify-content: space-between;flex-direction: row" formArrayName="options">
-                  <label>
-                    Options
-                  </label>
-                  <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
-                </span>
+                    <label>
+                      Options
+                    </label>
+                    <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
+                  </span>
                 @for (opt of optionArray(field).controls; track opt) {
                   <span class="action">
-                    <input class="plain" [formControl]="opt">
-                    <button matIconButton>
-                      <mat-icon>
-                        delete
-                      </mat-icon>
-                    </button>
-                  </span>
+                      <input class="plain" [formControl]="opt">
+                      <button matIconButton>
+                        <mat-icon>
+                          delete
+                        </mat-icon>
+                      </button>
+                    </span>
                 }
               }
               @case ('select') {
                 <span style="justify-content: space-between;flex-direction: row" formArrayName="options">
-                  <label>
-                    Options
-                  </label>
-                  <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
-                </span>
+                    <label>
+                      Options
+                    </label>
+                    <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
+                  </span>
                 @for (opt of optionArray(field).controls; track opt) {
                   <span class="action">
-                    <input class="plain" [formControl]="opt">
-                    <button matIconButton>
-                      <mat-icon>
-                        delete
-                      </mat-icon>
-                    </button>
-                  </span>
+                      <input class="plain" [formControl]="opt">
+                      <button matIconButton>
+                        <mat-icon>
+                          delete
+                        </mat-icon>
+                      </button>
+                    </span>
                 }
               }
             }
@@ -139,14 +148,35 @@
     </div>
   </mat-tab>
 
-
   <mat-tab label="Settings">
-    Settings
+    <div class="view-port settings" style="width: 50%; margin-left: auto; margin-right: auto">
+      <form class="card content" [formGroup]="settingsForm">
+        <span>
+          <h3>
+            Max Registration
+          </h3>
+          <input type="number" formControlName="max_count"/>
+        </span>
+        <span>
+          <h3>
+            Restrict IP based duplicate registration
+          </h3>
+          <input type="checkbox" formControlName="ip_restrict"/>
+        </span>
+        <span>
+          <h3>
+            Email User Registration (if specified)
+          </h3>
+          <input type="checkbox" formControlName="email_user"/>
+        </span>
+      </form>
+    </div>
   </mat-tab>
+
 
   <mat-tab label="JSON">
     <pre class="preview">
-      {{previewBundle()}}
+      {{ previewBundle() }}
     </pre>
   </mat-tab>
 

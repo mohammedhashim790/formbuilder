@@ -120,3 +120,17 @@ aside {
   font-size: 12px;
   line-height: 1.4;
 }
+
+.settings {
+}
+
+.settings span{
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.settings span input{
+  width: 100px;
+}

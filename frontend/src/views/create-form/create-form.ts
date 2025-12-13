@@ -28,6 +28,9 @@ export class CreateForm {
   private formBuilder: FormBuilder = new FormBuilder();
   formGroup: FormGroup;
 
+
+  settingsForm: FormGroup;
+
   protected previewBundle = () => JSON.stringify(this.formGroup.value, null, 2);
 
 
@@ -42,7 +45,12 @@ export class CreateForm {
 
   constructor() {
     this.formGroup = this.formBuilder.group({
-      name: new FormControl(''), desc: new FormControl(''), fields: this.formBuilder.array<FormConfig>([])
+      name: new FormControl('Untitled Form'), desc: new FormControl(''), fields: this.formBuilder.array<FormConfig>([])
+    });
+    this.settingsForm = this.formBuilder.group({
+      max_count: new FormControl<number | undefined>(undefined),
+      ip_restrict: new FormControl<boolean>(false),
+      email_user: new FormControl<boolean>(true)
     })
   }
 
@@ -80,7 +88,9 @@ export class CreateForm {
 
 
   protected onSubmit() {
-    console.log(JSON.stringify(this.formGroup.value, null, 2))
+    console.log(JSON.stringify(this.formGroup.value, null, 2));
+
+    console.log(this.settingsForm.value);
   }
 
   protected optionArray(field: FormGroup) {
