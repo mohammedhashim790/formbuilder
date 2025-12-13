@@ -1,3 +1,7 @@
+<button matButton style="margin-left: auto" (click)="onSubmit()">
+  Publish
+</button>
+
 <mat-tab-group>
   <mat-tab label="Editor">
     <div class="view-port">
@@ -13,24 +17,24 @@
         <button matButton (click)="addField('select')">Dropdown</button>
       </aside>
 
-      <div class="card content">
+      <form class="card content" [formGroup]="formGroup">
         <div class="card">
-          <input class="plain"/>
-          <textarea class="plain text-plain"></textarea>
+          <input class="plain" formControlName="name"/>
+          <textarea class="plain text-plain" formControlName="desc"></textarea>
         </div>
 
-        @for (field of fieldValues; track field.type; let index = $index) {
-          <div class="card">
+        @for (field of field.controls; track field.value; let index = $index) {
+          <div class="card" [formGroup]="field">
             <span class="action">
               <span>
                  <div class="drag" cdkDragHandle title="Drag to reorder">⋮⋮</div>
                 <h3>
-                  {{ field.type | titlecase }}
+                  {{ field.get('type')?.value | titlecase }}
                 </h3>
               </span>
               <span>
-                <div style="flex-direction: row;margin: 0px 10px">
-                  <input class="pk" [id]="`required-set-${index}`" type="checkbox">
+                <div style="flex-direction: row;margin: 0 10px">
+                  <input class="pk" [id]="`required-set-${index}`" formControlName="isRequired" type="checkbox">
                   <label [for]="`required-set-${index}`">
                     Required
                   </label>
@@ -42,50 +46,54 @@
                   </button>
               </span>
             </span>
-            <input class="plain" placeholder="Title"/>
-            <textarea class="plain text-plain" placeholder="Description"></textarea>
-            @switch (field.type) {
+            <input class="plain" placeholder="Title" formControlName="title"/>
+            <textarea class="plain text-plain" placeholder="Description" formControlName="desc"></textarea>
+            @switch (field.get('type')?.value) {
               @case ('text') {
 
               }
               @case ('checkbox') {
-                <span style="justify-content: space-between;flex-direction: row">
+                <span style="justify-content: space-between;flex-direction: row" formArrayName="options">
                   <label>
                     Options
                   </label>
-                  <button matIconButton><mat-icon>add</mat-icon></button>
+                  <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
                 </span>
-                <span class=" action">
-                  <input class="plain">
-                  <button matIconButton>
-                    <mat-icon>
-                      delete
-                    </mat-icon>
-                  </button>
-                </span>
+                @for (opt of optionArray(field).controls; track opt) {
+                  <span class="action">
+                    <input class="plain" [formControl]="opt">
+                    <button matIconButton>
+                      <mat-icon>
+                        delete
+                      </mat-icon>
+                    </button>
+                  </span>
+                }
               }
               @case ('select') {
-                <span style="justify-content: space-between;flex-direction: row">
+                <span style="justify-content: space-between;flex-direction: row" formArrayName="options">
                   <label>
                     Options
                   </label>
-                  <button matIconButton><mat-icon>add</mat-icon></button>
+                  <button matIconButton (click)="addOptions(field)"><mat-icon>add</mat-icon></button>
                 </span>
-                <span class="action">
-                  <input class="plain">
-                  <button matIconButton>
-                    <mat-icon>
-                      delete
-                    </mat-icon>
-                  </button>
-                </span>
+                @for (opt of optionArray(field).controls; track opt) {
+                  <span class="action">
+                    <input class="plain" [formControl]="opt">
+                    <button matIconButton>
+                      <mat-icon>
+                        delete
+                      </mat-icon>
+                    </button>
+                  </span>
+                }
               }
             }
 
           </div>
         }
 
-      </div>
+      </form>
 
 
       <!--      <aside class="card prop">-->
@@ -133,9 +141,16 @@
 
 
   <mat-tab label="Settings">
-
     Settings
   </mat-tab>
+
+  <mat-tab label="JSON">
+    <pre class="preview">
+      {{previewBundle()}}
+    </pre>
+  </mat-tab>
+
+
 </mat-tab-group>
 
 
