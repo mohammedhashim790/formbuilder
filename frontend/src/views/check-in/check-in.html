@@ -1,0 +1,38 @@
+<ng-container>
+  <h2 matListItemTitle>
+    Check In
+  </h2>
+
+  <mat-divider></mat-divider>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Form Name">
+      <th mat-header-cell *matHeaderCellDef>Form Name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.formName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Form Link">
+      <th mat-header-cell *matHeaderCellDef>Link</th>
+      <td mat-cell *matCellDef="let element">
+        <a [href]="element.link" target="_blank"> link </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Created At">
+      <th mat-header-cell *matHeaderCellDef>Created At</th>
+      <td mat-cell *matCellDef="let element"> {{ element.created_at | date:'medium' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton>
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-container>

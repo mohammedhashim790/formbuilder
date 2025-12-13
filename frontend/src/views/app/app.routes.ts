@@ -26,7 +26,10 @@ export const routes: Routes = [
         path:'draw',
         loadComponent: ()=> import('../draw-board/draw-board').then(m => m.DrawingBoard),
       },
-
+      {
+        path:'checkin',
+        loadComponent: ()=> import('../check-in/check-in').then(m => m.CheckIn)
+      },
       // TODO : Define a parent Form Component, inherit the component to create, view / edit
       {
         path:'create',
