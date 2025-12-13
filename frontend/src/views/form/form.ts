@@ -4,13 +4,14 @@ import {
   FormArray,
   FormBuilder,
   FormControl,
-  FormGroup, ReactiveFormsModule,
+  FormGroup,
+  ReactiveFormsModule,
   ValidationErrors,
-  ValidatorFn, Validators
+  ValidatorFn,
+  Validators
 } from '@angular/forms';
+import {FieldType} from '../../models/form.model';
 
-
-type FieldType = 'text' | 'checkbox' | 'select';
 
 type FieldFromDb = {
   type: FieldType; title: string; desc: string; isRequired: boolean; options?: string[];
@@ -28,9 +29,7 @@ const atLeastOneChecked: ValidatorFn = (ctrl: AbstractControl): ValidationErrors
 
 
 @Component({
-  selector: 'app-form', imports: [
-    ReactiveFormsModule
-  ], templateUrl: './form.html', styleUrl: './form.css',
+  selector: 'app-form', imports: [ReactiveFormsModule], templateUrl: './form.html', styleUrl: './form.css',
 })
 export class Form {
 

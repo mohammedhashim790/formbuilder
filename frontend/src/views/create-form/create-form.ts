@@ -5,15 +5,8 @@ import {MatIcon} from '@angular/material/icon';
 import {CdkDragHandle} from '@angular/cdk/drag-drop';
 import {TitleCasePipe} from '@angular/common';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FieldType, FormConfig} from '../../models/form.model';
 
-
-type FormConfig = {
-  type: 'text' | 'checkbox' | 'select',
-  title: FormControl<string>,
-  desc: FormControl<string>,
-  options: FormArray<FormControl>,
-  isRequired: FormControl<boolean>
-}
 
 @Component({
   selector: 'app-create-form',
@@ -54,7 +47,7 @@ export class CreateForm {
     })
   }
 
-  protected addField(type: "text" | "checkbox" | "select") {
+  protected addField(type: FieldType) {
     let group: FormGroup = this.formBuilder.group({});
 
     switch (type) {
@@ -69,6 +62,11 @@ export class CreateForm {
         });
         break;
 
+      case "email":
+        group = this.formBuilder.group({
+          type: type, title: new FormControl(), isRequired: new FormControl(false), desc: new FormControl<string>('')
+        });
+        break;
       case "text":
         group = this.formBuilder.group({
           type: type, title: new FormControl(), isRequired: new FormControl(false), desc: new FormControl<string>('')
