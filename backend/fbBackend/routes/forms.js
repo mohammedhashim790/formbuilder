@@ -11,18 +11,27 @@ const TABLE = process.env.FORMS_TABLE;
 // CREATE form
 router.post('/', async (req, res, next) => {
     try {
-        const {
-            formName, title, desc, userId,
-        } = req.body;
+        const { name, desc, fields } = req.body;
+        const userId = req.headers['user_id'];
 
         const now = new Date().toISOString();
         const item = {
-            id: uuidv4(), formName, title, desc, userId, createdAt: now, updatedAt: now,
+            id: uuidv4(),
+            formName: name,
+            title: name,
+            desc,
+            userId,
+            fields,
+            createdAt: now,
+            updatedAt: now,
         };
 
-        await docClient.send(new PutCommand({
-            TableName: TABLE, Item: item,
-        }),);
+        await docClient.send(
+            new PutCommand({
+                TableName: TABLE,
+                Item: item,
+            }),
+        );
 
         res.status(201).json(item);
     } catch (err) {

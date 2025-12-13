@@ -12,12 +12,16 @@ const recordsRouter = require('./routes/records');
 const authRouter = require('./routes/auth');
 
 const authMiddleware = require('./middleware/auth');
+const {auth} = require("./auth/auth");
 
 const app = express();
 
 app.use(express.json());
 
 app.use(cors());
+
+
+app.use((req, res, next) => auth(req, res, next))
 
 
 app.use('/auth', authRouter);

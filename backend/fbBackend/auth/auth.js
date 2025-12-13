@@ -7,12 +7,43 @@ const {
     AdminConfirmSignUpCommand,
 } = require('@aws-sdk/client-cognito-identity-provider');
 
+const {CognitoJwtVerifier} = require('aws-jwt-verify');
+
+
 const client = new CognitoIdentityProviderClient({
     region: process.env.AWS_REGION,
 });
 
 const UserPoolId = process.env.COGNITO_USER_POOL_ID;
 const ClientId = process.env.COGNITO_CLIENT_ID;
+
+
+const verifier = CognitoJwtVerifier.create({
+    userPoolId: UserPoolId, clientId: ClientId, tokenUse: 'access',
+});
+
+
+async function auth(req, res, next) {
+    try {
+        const authHeader = req.headers.authorization || '';
+        const [scheme, token] = authHeader.split(' ');
+
+        if (scheme !== 'Bearer' || !token) {
+            return new Error("Missing or invalid Authorization header");
+        }
+
+        const payload = await verifier.verify(token);
+        req.headers['user_id'] = payload.sub;
+
+    } catch (err) {
+        console.error('Auth error:', err);
+        // return res.status(401).json({error: 'Invalid or expired token'});
+    } finally {
+        // temporary
+        next();
+
+    }
+}
 
 async function signUpUser({email, password}) {
     const cmd = new SignUpCommand({
@@ -54,5 +85,5 @@ async function signOutUser({accessToken}) {
 }
 
 module.exports = {
-    signUpUser, confirmUser, signInUser, signOutUser,
+    signUpUser, confirmUser, signInUser, signOutUser, auth
 };
