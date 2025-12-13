@@ -17,12 +17,13 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDivider, MatListItemTitle} from '@angular/material/list';
 import {RouterLink} from '@angular/router';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 
 @Component({
   selector: 'app-list-form',
   standalone: true,
-  imports: [MatTable, MatColumnDef, MatHeaderCell, MatCell, MatCellDef, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, DatePipe, MatIconButton, MatIcon, MatButton, MatListItemTitle, MatDivider, RouterLink],
+  imports: [MatTable, MatColumnDef, MatHeaderCell, MatCell, MatCellDef, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, DatePipe, MatIconButton, MatIcon, MatButton, MatListItemTitle, MatDivider, RouterLink, MatMenu, MatMenuItem, MatMenuTrigger],
   templateUrl: './list-form.html',
   styleUrl: './list-form.css'
 })
