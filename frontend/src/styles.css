@@ -1,13 +1,60 @@
 /*@import "tailwindcss";*/
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  --color-border: black;
+}
 
 
+h3, h4, h5 {
+  margin: 0;
+}
 
 button {
   cursor: pointer;
   justify-content: center;
   align-items: center;
   display: flex !important;
+}
+
+input, textarea, select {
+  padding: 2% 1%;
+  width: 98%;
+  color: black;
+  font-size: 14px;
+  background: transparent;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+}
+
+
+textarea {
+  resize: vertical;
+}
+
+
+.plain {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  font-weight: 500;
+  outline: none;
+  position: relative;
+}
+
+
+.text-plain {
+  border: 1px solid var(--color-border) !important;
+}
+
+label {
+  text-align: center;
+  justify-content: center;
 }

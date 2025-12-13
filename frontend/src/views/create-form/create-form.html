@@ -1,1 +1,130 @@
-<p>create-form works!</p>
+<mat-tab-group>
+  <mat-tab label="Editor">
+    <div class="view-port">
+      <aside class="card toolbar">
+        <h3>
+          Toolbar
+        </h3>
+        <small>
+          Add Items
+        </small>
+        <button matButton (click)="addField('text')">Text Field</button>
+        <button matButton (click)="addField('checkbox')">CheckBox</button>
+        <button matButton (click)="addField('select')">Dropdown</button>
+      </aside>
+
+      <div class="card content">
+        <div class="card">
+          <input class="plain"/>
+          <textarea class="plain text-plain"></textarea>
+        </div>
+
+        @for (field of form; track field.field; let index = $index) {
+          <div class="card">
+            <span class="action">
+              <span>
+                 <div class="drag" cdkDragHandle title="Drag to reorder">⋮⋮</div>
+                <h3>
+                  {{ field.field | titlecase }}
+                </h3>
+              </span>
+              <span>
+                <button matIconButton (click)="removeField(index)">
+                    <mat-icon>
+                      cancel
+                    </mat-icon>
+                  </button>
+              </span>
+            </span>
+            <input class="plain" placeholder="Title"/>
+            <textarea class="plain text-plain" placeholder="Description"></textarea>
+            @switch (field.field) {
+              @case ('text') {
+
+              }
+              @case ('checkbox') {
+                <span class="action">
+                  <input class="plain">
+                   <button matIconButton>
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+                  </button>
+                </span>
+              }
+              @case ('select') {
+                <span class="action">
+                  <input class="plain">
+                  <button matIconButton>
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+                  </button>
+                </span>
+              }
+            }
+
+          </div>
+        }
+
+      </div>
+
+
+      <aside class="card prop">
+        <h3>
+          Properties
+        </h3>
+        <span>
+          <small>
+            Field Type
+          </small>
+          <!--      TODO    add dynamic field types here-->
+          <select>
+            <option>
+              Text
+            </option>
+            <option>
+              CheckBox
+            </option>
+            <option>
+              Select
+            </option>
+          </select>
+        </span>
+
+        <span>
+          <small>
+            Key
+          </small>
+          <input>
+        </span>
+
+        <span>
+          <small>
+            Options
+          </small>
+          <span class="conf">
+            <input class="pk" id="required-set" type="checkbox">
+            <label for="required-set">
+              Required
+            </label>
+          </span>
+
+        </span>
+
+
+      </aside>
+
+    </div>
+  </mat-tab>
+
+
+  <mat-tab label="Settings">
+
+    Settings
+  </mat-tab>
+</mat-tab-group>
+
+
+
+
