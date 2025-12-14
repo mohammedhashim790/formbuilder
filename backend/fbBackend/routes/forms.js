@@ -10,6 +10,7 @@ const TABLE = process.env.FORMS_TABLE;
 
 
 const shortUUid = require('short-uuid')
+const redis = require("../core/redis");
 
 // CREATE form
 router.post('/', async (req, res, next) => {
@@ -44,14 +45,31 @@ router.get('/', async (_req, res, next) => {
 
 // GET form by id
 router.get('/:id', async (req, res, next) => {
+    const cacheKey = `form:${req.params.id}`;
+
     try {
+        try {
+            const cached = await redis.get(cacheKey);
+            if (cached) {
+                const cachedItem = JSON.parse(cached);
+                return res.json(cachedItem);
+            }
+        } catch (_) {
+        }
+
         const result = await docClient.send(new GetCommand({
             TableName: TABLE, Key: {id: req.params.id},
-        }));
+        }),);
 
         if (!result.Item) {
             return res.status(404).json({error: 'Form not found'});
         }
+
+        try {
+            await redis.set(cacheKey, JSON.stringify(result.Item), 'EX', 300);
+        } catch (_) {
+        }
+
         res.json(result.Item);
     } catch (err) {
         next(err);

@@ -47,12 +47,12 @@ export class Entries {
         const recordWithMostColumns = this.records.reduce((max, curr) => Object.keys(curr).length > Object.keys(max).length ? curr : max);
 
         this.headers = Object.keys(recordWithMostColumns);
-        debugger;
+
       } else {
         this.headers = [];
       }
       this.cdr.detectChanges();
-      debugger;
+
     });
   }
 

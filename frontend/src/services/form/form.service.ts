@@ -29,7 +29,7 @@ export class FormService {
 
 
   create(data: any): Promise<FormFromDb> {
-    return this.http.post(this.url + '/forms', data, {
+    return this.http.post(this.url + 'forms/', data, {
       headers: {
         Authorization: 'Bearer ' + (this.authManager.user.at ?? '')
       }

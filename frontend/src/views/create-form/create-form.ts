@@ -6,6 +6,8 @@ import {CdkDragHandle} from '@angular/cdk/drag-drop';
 import {TitleCasePipe} from '@angular/common';
 import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {FieldType, FormConfig} from '../../models/form.model';
+import {FormService} from '../../services/form/form.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -24,6 +26,7 @@ export class CreateForm {
 
   settingsForm: FormGroup;
 
+
   protected previewBundle = () => JSON.stringify(this.formGroup.value, null, 2);
 
 
@@ -36,7 +39,7 @@ export class CreateForm {
   }
 
 
-  constructor() {
+  constructor(private formService: FormService, private router: Router) {
     this.formGroup = this.formBuilder.group({
       name: new FormControl('Untitled Form'), desc: new FormControl(''), fields: this.formBuilder.array<FormConfig>([])
     });
@@ -86,9 +89,7 @@ export class CreateForm {
 
 
   protected onSubmit() {
-    console.log(JSON.stringify(this.formGroup.value, null, 2));
-
-    console.log(this.settingsForm.value);
+    this.formService.create(this.formGroup.value).then((_) => this.router.navigate(['/app']));
   }
 
   protected optionArray(field: FormGroup) {
