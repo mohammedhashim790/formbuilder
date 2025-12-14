@@ -40,11 +40,15 @@ export const routes: Routes = [
         loadComponent: ()=> import('../create-form/create-form').then(m => m.CreateForm),
       },
       {
-        path:'form',
-        loadComponent: ()=> import('../form/form').then(m => m.Form),
+        path:'entry',
+        loadComponent: ()=> import('../entries/entries').then(m => m.Entries),
       },
 
     ]
+  },
+  {
+    path:'form',
+    loadComponent: ()=> import('../form/form').then(m => m.Form),
   },
   {
     path: 'login',

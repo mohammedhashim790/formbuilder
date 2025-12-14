@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -11,13 +11,14 @@ import {
   MatRowDef,
   MatTable
 } from '@angular/material/table';
-import {Form} from '../../models/form.model';
+import {FormFromDb} from '../../models/form.model';
 import {DatePipe} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDivider, MatListItemTitle} from '@angular/material/list';
 import {RouterLink} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {FormService} from '../../services/form/form.service';
 
 
 @Component({
@@ -27,19 +28,23 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
   templateUrl: './list-form.html',
   styleUrl: './list-form.css'
 })
-export class ListForm {
+export class ListForm implements OnInit {
 
   displayedColumns: string[] = ['Form Link', 'Form Name', 'Created At', 'Actions'];
-  dataSource: Form[];
+  dataSource: FormFromDb[] = [];
 
-  constructor() {
-    this.dataSource = new Array<Form>(10).fill({created_at: new Date(), formName: '', id: 0, link:'https://google.com'}).map((_, index) => {
-      const res: Form = {
-        id: index, formName: `formName ${index}`, created_at: new Date(), link:'https://google.com'
-      };
-      return res;
+  constructor(private formService: FormService, private changeDetector: ChangeDetectorRef) {
+    this.read();
+  }
+
+  ngOnInit(): void {
+  }
+
+  private read() {
+    this.formService.list().then((res) => {
+      this.dataSource = res
+      this.changeDetector.detectChanges();
     });
-    console.log(this.dataSource);
   }
 
 }

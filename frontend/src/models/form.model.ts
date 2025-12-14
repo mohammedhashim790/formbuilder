@@ -16,4 +16,13 @@ export type FormConfig = {
 }
 
 
+export type FieldFromDb = {
+  type: FieldType; title: string; desc: string; isRequired: boolean; options?: string[];
+};
+
+export type FormFromDb = {
+  title: string; desc: string; fields: FieldFromDb[]; createdAt: string; updateAt: string; link: string;
+};
+
+
 

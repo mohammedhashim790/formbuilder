@@ -13,13 +13,16 @@ router.post('', async (req, res, next) => {
     try {
         const record = req.body;
 
+        const formId = record.formId;
+        delete record['formId']
+
         const item = {
-            formId: record.formId, id: uuidv4(), record: JSON.stringify(record), createdAt: new Date().toISOString(),
+            formId, id: uuidv4(), record: JSON.stringify(record), createdAt: new Date().toISOString(),
         };
 
         await docClient.send(new PutCommand({
             TableName: TABLE, Item: item,
-        }),);
+        }));
 
         res.status(201).json(item);
     } catch (err) {
@@ -27,13 +30,11 @@ router.post('', async (req, res, next) => {
     }
 });
 
-// LIST records for a form
+// LIST record for a form
 router.get('/:formId', async (req, res, next) => {
     try {
         const result = await docClient.send(new ScanCommand({
-            TableName: TABLE,
-            FilterExpression: 'formId = :f',
-            ExpressionAttributeValues: { ':f': req.params.formId },
+            TableName: TABLE, FilterExpression: 'formId = :f', ExpressionAttributeValues: {':f': req.params.formId},
         }));
 
         const items = (result.Items || []).map(r => ({
@@ -47,7 +48,7 @@ router.get('/:formId', async (req, res, next) => {
 });
 
 // GET single record
-router.get('/:formId/records/:id', async (req, res, next) => {
+router.get('/:formId/record/:id', async (req, res, next) => {
     try {
         const result = await docClient.send(new GetCommand({
             TableName: TABLE, Key: {
@@ -68,5 +69,32 @@ router.get('/:formId/records/:id', async (req, res, next) => {
         next(err);
     }
 });
+
+
+router.post('/checkin/:id', async (req, res, next) => {
+    try {
+        const result = await docClient.send(new GetCommand({
+            TableName: TABLE, Key: {
+                formId: req.params.formId, id: req.params.id,
+            },
+        }),);
+
+        if (!result.Item) {
+            return res.status(404).json({error: 'Record not found'});
+        }
+
+        const item = {
+            ...result.Item, checkedIn: true, checkedInAt: new Date().toISOString()
+        };
+        await docClient.send(new PutCommand({
+            TableName: TABLE, Item: item,
+        }));
+
+        res.json(item);
+    } catch (err) {
+        next(err);
+    }
+});
+
 
 module.exports = router;

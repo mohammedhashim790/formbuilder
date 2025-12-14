@@ -1,13 +1,13 @@
 <form class="card content" [formGroup]="formGroup" (ngSubmit)="submit()">
   <div class="card">
-    <h2 class="title">{{ sampleResponse.name }}</h2>
+    <h2 class="title">{{ sampleResponse.title }}</h2>
     <p class="muted">{{ sampleResponse.desc }}</p>
   </div>
 
   @for (f of fields(); track f.title; let index = $index) {
     <div class="card">
       <div class="head">
-        <h3 class="qtitle">
+        <h3 class="title">
           {{ f.title }}
           @if (f.isRequired) {
             <span class="req">*</span>

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -10,16 +10,10 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import {FieldType} from '../../models/form.model';
+import {FieldFromDb, FormFromDb} from '../../models/form.model';
+import {FormService} from '../../services/form/form.service';
+import {ActivatedRoute} from '@angular/router';
 
-
-type FieldFromDb = {
-  type: FieldType; title: string; desc: string; isRequired: boolean; options?: string[];
-};
-
-type FormFromDb = {
-  name: string; desc: string; fields: FieldFromDb[];
-};
 
 const atLeastOneChecked: ValidatorFn = (ctrl: AbstractControl): ValidationErrors | null => {
   const fa = ctrl as FormArray<FormControl<boolean>>;
@@ -35,26 +29,26 @@ export class Form {
 
 
   protected sampleResponse: FormFromDb = {
-    name: 'New Form',
-    desc: 'New Form Description',
-    fields: [{type: 'text', title: 'Email', isRequired: false, desc: 'Enter Email'}, {
-      type: 'checkbox', title: 'CheckBox', options: ['Option 1', 'Option 2'], isRequired: true, desc: 'Select Options'
-    }, {
-      type: 'select',
-      title: 'Select',
-      options: ['Option 1', 'Option 2 ', 'Option 3'],
-      isRequired: false,
-      desc: 'Choose option'
-    }, {
-      type: 'email', title: 'Email', isRequired: false, desc: 'Enter Email',
-    }]
+    createdAt: '', updateAt: '', title: '', desc: '', link: '', fields: []
   };
 
-  protected formGroup: FormGroup;
+  private formId: string = ''
+
+  protected formGroup!: FormGroup;
   protected submitted = false;
 
-  constructor(private fb: FormBuilder) {
-    this.formGroup = this.buildForm(this.sampleResponse);
+  constructor(private fb: FormBuilder, private formService: FormService, private cdr: ChangeDetectorRef, private ar: ActivatedRoute) {
+    this.read(this.ar.snapshot.queryParamMap.get('id') ?? '');
+
+  }
+
+  private read(id: string) {
+    this.formId = id;
+    this.formService.getById(id).then(res => {
+      this.sampleResponse = res;
+      this.formGroup = this.buildForm(this.sampleResponse);
+      this.cdr.detectChanges();
+    });
   }
 
   protected fields(): FieldFromDb[] {
@@ -80,20 +74,24 @@ export class Form {
 
     if (this.formGroup.invalid) return;
 
-    const answers = this.sampleResponse.fields.map((f, i) => {
+    const userMap = new Map<string, any>();
+
+    userMap.set('formId', this.formId);
+
+    for (let i = 0; i < this.sampleResponse.fields.length; i++) {
+      const f = this.sampleResponse.fields[i];
+      const key = f.title;
+      var res = {};
       if (f.type === 'checkbox') {
         const arr = this.checkboxArray(i);
-        const selected = (f.options ?? []).filter((_, oi) => !!arr.at(oi)?.value);
-        return {type: f.type, title: f.title, value: selected};
+        userMap.set(key, (f.options ?? []).filter((_, oi) => !!arr.at(oi)?.value));
+
+      } else {
+        userMap.set(key, String(this.formGroup.get(this.fieldKey(i))?.value ?? ''));
       }
+    }
 
-      const v = this.formGroup.get(this.fieldKey(i))?.value ?? '';
-      return {type: f.type, title: f.title, value: String(v)};
-    });
-
-    // this.store.save({
-    //   formName: this.sampleResponse.name, submittedAt: new Date().toISOString(), answers
-    // });
+    console.log(Object.fromEntries(userMap.entries()));
 
     this.submitted = true;
     this.formGroup.reset(this.buildForm(this.sampleResponse).getRawValue());

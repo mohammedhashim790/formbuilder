@@ -19,13 +19,13 @@
     <ng-container matColumnDef="Form Link">
       <th mat-header-cell *matHeaderCellDef>Link</th>
       <td mat-cell *matCellDef="let element">
-        <a [href]="element.link" target="_blank"> link </a>
+        <a routerLink="/form" [queryParams]="{id: element.id}" target="_blank"> link </a>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="Created At">
       <th mat-header-cell *matHeaderCellDef>Created At</th>
-      <td mat-cell *matCellDef="let element"> {{ element.created_at | date:'medium' }}</td>
+      <td mat-cell *matCellDef="let element"> {{ element.createdAt | date:'medium' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Actions">
@@ -36,7 +36,7 @@
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item>Check In</button>
-          <button mat-menu-item>View / Edit</button>
+          <button mat-menu-item routerLink="entry" [queryParams]="{id: element.id}">View Entries</button>
         </mat-menu>
       </td>
     </ng-container>
