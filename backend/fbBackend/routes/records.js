@@ -1,7 +1,7 @@
 const express = require('express');
 const {v4: uuidv4} = require('uuid');
 const {
-    PutCommand, QueryCommand, GetCommand,
+    PutCommand, ScanCommand, GetCommand,
 } = require('@aws-sdk/lib-dynamodb');
 const {docClient} = require('../core/dynamo');
 
@@ -9,15 +9,12 @@ const router = express.Router({mergeParams: true});
 const TABLE = process.env.RECORDS_TABLE;
 
 // CREATE record for a form
-router.post('/:formId/records', async (req, res, next) => {
+router.post('', async (req, res, next) => {
     try {
-        const {record} = req.body; // any JSON
+        const record = req.body;
 
         const item = {
-            formId: req.params.formId,
-            id: uuidv4(),
-            record: JSON.stringify(record),
-            createdAt: new Date().toISOString(),
+            formId: record.formId, id: uuidv4(), record: JSON.stringify(record), createdAt: new Date().toISOString(),
         };
 
         await docClient.send(new PutCommand({
@@ -31,13 +28,13 @@ router.post('/:formId/records', async (req, res, next) => {
 });
 
 // LIST records for a form
-router.get('/:formId/records', async (req, res, next) => {
+router.get('/:formId', async (req, res, next) => {
     try {
-        const result = await docClient.send(new QueryCommand({
+        const result = await docClient.send(new ScanCommand({
             TableName: TABLE,
-            KeyConditionExpression: 'formId = :f',
-            ExpressionAttributeValues: {':f': req.params.formId},
-        }),);
+            FilterExpression: 'formId = :f',
+            ExpressionAttributeValues: { ':f': req.params.formId },
+        }));
 
         const items = (result.Items || []).map(r => ({
             ...r, record: JSON.parse(r.record),

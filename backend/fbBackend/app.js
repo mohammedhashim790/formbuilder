@@ -33,12 +33,8 @@ app.use(authMiddleware);
 app.use('/forms', formsRouter);
 app.use('/assets', assetsRouter);
 app.use('/rules', rulesRouter);
-app.use('/records', recordsRouter);
+app.use('/record', recordsRouter);
 
-app.use('/forms', formConfigsRouter); // /forms/:formId/config
-app.use('/forms', fieldsRouter);      // /forms/:formId/fields
-app.use('/fields', rulesRouter);      // /fields/:fieldId/rules (alt)
-app.use('/forms', recordsRouter);     // /forms/:formId/records (alt)
 
 app.get('/health', (_req, res) => {
     res.json({status: 'ok'});
