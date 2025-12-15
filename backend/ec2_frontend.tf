@@ -12,49 +12,50 @@ resource "aws_launch_template" "frontend" {
   }
 
   user_data = base64encode(<<-EOF
-            #!/bin/bash
-            yum update -y
-            yum install nginx -y
-            yum install ec2-instance-connect -y
-            systemctl start nginx
-            systemctl enable nginx
-            # install git
-            yum install git -y
-            git --version
-            # clone the application
-            git clone https://github.com/mohammedhashim790/formbuilder.git
-            # ls directory
-            ls
-            cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html
-            # Nginx default server (for time-being ONLY)
-            # /usr/share/nginx/html
-            cat <<EOT > /etc/nginx/conf.d/default.conf
-              server {
-                  listen 80;
-                  server_name _;
-                  root /usr/share/nginx/html;
-                  index index.html;
+          #!/bin/bash
+          # 1. Install dependencies
+          yum update -y
+          yum install nginx git ec2-instance-connect nano -y
 
-                  # Serve Angular App (Support Routing)
-                  location / {
-                      try_files \$uri \$uri/ /index.html;
-                  }
+          # 2. CRITICAL: Allow Nginx to connect to network (Fixes 502 Bad Gateway on Amazon Linux)
+          setsebool -P httpd_can_network_connect 1
 
-                  # Proxy API calls to Internal ALB
-                  location /api/ {
-                      # INTERPOLATION: Terraform will replace this with the real DNS
-                      proxy_pass http://${aws_lb.internal.dns_name}/;
+          # 3. Setup Angular App
+          git clone https://github.com/mohammedhashim790/formbuilder.git
+          # Clear default nginx files and copy yours
+          rm -rf /usr/share/nginx/html/*
+          cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html/
 
-                      proxy_set_header Host \$host;
-                      proxy_set_header X-Real-IP \$remote_addr;
-                      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                  }
-              }
-              EOT
+          # 4. Write Nginx Config
+          # IMPORTANT: The closing 'EOT' below must be at the very start of the line.
+          cat <<EOT > /etc/nginx/conf.d/default.conf
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
 
+    # Serve Angular App (Support Routing)
+    location / {
+        try_files \$uri \$uri/ /index.html;
+    }
 
-            systemctl restart nginx
-            EOF
+    # Proxy API calls to Internal ALB
+    location /api/ {
+        # Trailing slash is important to strip /api/ from the request
+        proxy_pass http://${aws_lb.internal.dns_name}/;
+
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+}
+EOT
+
+          # 5. Start Nginx
+          systemctl enable nginx
+          systemctl restart nginx
+          EOF
   )
 
   tag_specifications {
