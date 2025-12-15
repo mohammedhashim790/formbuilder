@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class HealthService {
 
-  url: string = "http://internal-formbuilder-internal-alb-1172368990.us-east-1.elb.amazonaws.com/"
+  url: string = "/api/"
 
 
   constructor(private http: HttpClient) {

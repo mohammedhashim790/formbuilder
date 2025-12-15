@@ -28,6 +28,31 @@ resource "aws_launch_template" "frontend" {
             cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html
             # Nginx default server (for time-being ONLY)
             # /usr/share/nginx/html
+            cat <<EOT > /etc/nginx/conf.d/default.conf
+              server {
+                  listen 80;
+                  server_name _;
+                  root /usr/share/nginx/html;
+                  index index.html;
+
+                  # Serve Angular App (Support Routing)
+                  location / {
+                      try_files \$uri \$uri/ /index.html;
+                  }
+
+                  # Proxy API calls to Internal ALB
+                  location /api/ {
+                      # INTERPOLATION: Terraform will replace this with the real DNS
+                      proxy_pass http://${aws_lb.internal.dns_name}/;
+
+                      proxy_set_header Host \$host;
+                      proxy_set_header X-Real-IP \$remote_addr;
+                      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  }
+              }
+              EOT
+
+
             systemctl restart nginx
             EOF
   )
