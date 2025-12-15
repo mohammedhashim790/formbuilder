@@ -8,7 +8,7 @@ import {AuthManager} from '../../core/auth/AuthManager';
 })
 export class FormService {
 
-  url: string = "http://localhost:4000/"
+  url: string = "http://internal-formbuilder-internal-alb-1172368990.us-east-1.elb.amazonaws.com/"
 
   constructor(private http: HttpClient, private authManager: AuthManager) {
   }

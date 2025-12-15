@@ -8,7 +8,7 @@ import {AuthManager} from '../../core/auth/AuthManager';
 export class AuthService {
 
 
-  private url: string = "http://localhost:4000/";
+  private url: string = "http://internal-formbuilder-internal-alb-1172368990.us-east-1.elb.amazonaws.com/";
 
   private authManager: AuthManager = inject(AuthManager);
 
