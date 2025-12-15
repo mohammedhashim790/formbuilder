@@ -5,4 +5,25 @@ docker buildx build \
 
 
 
+# Best supported architecture for Docker Executables built from MAC is Linux/arm64 and ECS<FARGATE EPU ARCHITECTURE LINUXX/ARM64.
 docker buildx build --platform linux/arm64 -t 792856558865.dkr.ecr.us-east-1.amazonaws.com/fb-api:latest --push .
+
+
+
+aws ecs update-service \
+  --cluster formbuilder-ecs-cluster \
+  --service formbuilder-form-builder-service  \
+  --enable-execute-command
+
+
+aws logs describe-log-streams \
+  --log-group-name /ecs/test_cluster \
+  --order-by LastEventTime \
+  --descending \
+  --max-items 5 \
+  --query "logStreams[*].logStreamName" \
+  --output text
+
+
+
+

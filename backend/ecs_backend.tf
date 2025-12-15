@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "form-builder_service" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
 
 
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "form-builder_service" {
         }
       }
       environment = [
-        { name = "PORT", value = "4000" },
+        { name = "PORT", value = "8080" },
         { name = "AWS_REGION", value = "us-east-1" },
         { name = "FORMS_TABLE", value = "forms" },
         { name = "FORM_CONFIGS_TABLE", value = "form_configs" },
