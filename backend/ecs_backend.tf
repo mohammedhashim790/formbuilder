@@ -70,6 +70,8 @@ resource "aws_ecs_task_definition" "form-builder_service" {
   memory                   = "512"
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
 
+  task_role_arn = aws_iam_role.ecs_task_role.arn
+
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
@@ -104,8 +106,8 @@ resource "aws_ecs_task_definition" "form-builder_service" {
         { name = "ASSETS_TABLE", value = "assets" },
         { name = "RULES_TABLE", value = "rules" },
         { name = "RECORDS_TABLE", value = "records" },
-        { name = "REDIS_HOST", value = aws_elasticache_replication_group.redis.primary_endpoint_address },
-        { name = "REDIS_PORT", value = tostring(aws_elasticache_replication_group.redis.port) },
+        # { name = "REDIS_HOST", value = aws_elasticache_replication_group.redis.primary_endpoint_address },
+        # { name = "REDIS_PORT", value = tostring(aws_elasticache_replication_group.redis.port) },
         { name = "COGNITO_USER_POOL_ID", value = aws_cognito_user_pool.cognito.id },
         { name = "COGNITO_CLIENT_ID", value = aws_cognito_user_pool_client.client_app.id }
       ]

@@ -22,7 +22,6 @@ resource "aws_iam_policy" "ecs_task_all_permissions" {
     Version = "2012-10-17",
     Statement = [
 
-
       {
         Sid    = "DynamoDBCRUD",
         Effect = "Allow",
@@ -48,9 +47,6 @@ resource "aws_iam_policy" "ecs_task_all_permissions" {
         ]
       },
 
-
-
-
       {
         Sid    = "S3ListBucket",
         Effect = "Allow",
@@ -74,23 +70,11 @@ resource "aws_iam_policy" "ecs_task_all_permissions" {
         Resource = ["${aws_s3_bucket.static.arn}/*"]
       },
 
-
-
-
       {
         Sid    = "CognitoUserPoolAdmin",
         Effect = "Allow",
         Action = [
-          "cognito-idp:AdminCreateUser",
-          "cognito-idp:AdminGetUser",
-          "cognito-idp:AdminUpdateUserAttributes",
-          "cognito-idp:AdminDeleteUser",
-          "cognito-idp:ListUsers",
-          "cognito-idp:AdminDisableUser",
-          "cognito-idp:AdminEnableUser",
-          "cognito-idp:AdminSetUserPassword",
-          "cognito-idp:AdminAddUserToGroup",
-          "cognito-idp:AdminRemoveUserFromGroup"
+          "cognito-idp:*"
         ],
         Resource = [aws_cognito_user_pool.cognito.arn]
       },

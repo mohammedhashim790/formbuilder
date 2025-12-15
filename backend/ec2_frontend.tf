@@ -11,24 +11,17 @@ resource "aws_launch_template" "frontend" {
     security_groups             = [aws_security_group.ec2_frontend.id]
   }
 
-  user_data = base64encode(<<-EOF
-          #!/bin/bash
-          # 1. Install dependencies
-          yum update -y
-          yum install nginx git ec2-instance-connect nano -y
+  user_data = base64encode(<<EOF
+#!/bin/bash
+yum update -y
+yum install nginx git ec2-instance-connect nano -y
 
-          # 2. CRITICAL: Allow Nginx to connect to network (Fixes 502 Bad Gateway on Amazon Linux)
-          setsebool -P httpd_can_network_connect 1
+git clone https://github.com/mohammedhashim790/formbuilder.git
+# Clear default nginx files and copy yours
+cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html/
 
-          # 3. Setup Angular App
-          git clone https://github.com/mohammedhashim790/formbuilder.git
-          # Clear default nginx files and copy yours
-          rm -rf /usr/share/nginx/html/*
-          cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html/
-
-          # 4. Write Nginx Config
-          # IMPORTANT: The closing 'EOT' below must be at the very start of the line.
-          cat <<EOT > /etc/nginx/conf.d/default.conf
+# IMPORTANT: The closing 'EOT' below must be at the very start of the line.
+cat <<EOT > /etc/nginx/conf.d/default.conf
 server {
     listen 80;
     server_name _;
@@ -52,10 +45,9 @@ server {
 }
 EOT
 
-          # 5. Start Nginx
-          systemctl enable nginx
-          systemctl restart nginx
-          EOF
+systemctl enable nginx
+systemctl restart nginx
+EOF
   )
 
   tag_specifications {

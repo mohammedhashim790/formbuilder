@@ -5,8 +5,11 @@ docker buildx build \
 
 
 
-# Best supported architecture for Docker Executables built from MAC is Linux/arm64 and ECS<FARGATE EPU ARCHITECTURE LINUXX/ARM64.
-docker buildx build --platform linux/arm64 -t 792856558865.dkr.ecr.us-east-1.amazonaws.com/fb-api:latest --push .
+# Best supported architecture for Docker Executables built from MAC is Linux/amd64 and ECS<FARGATE EPU ARCHITECTURE LINUXX/amd64.
+docker buildx build --platform linux/amd64 -t 792856558865.dkr.ecr.us-east-1.amazonaws.com/fb-api:latest --push .
+
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 792856558865.dkr.ecr.us-east-1.amazonaws.com
 
 
 
