@@ -1,0 +1,8 @@
+docker buildx build \
+  --platform linux/arm64 \
+  -t 792856558865.dkr.ecr.us-east-1.amazonaws.com/fb-api:latest \
+  --push .
+
+
+
+docker buildx build --platform linux/arm64 -t 792856558865.dkr.ecr.us-east-1.amazonaws.com/fb-api:latest --push .
