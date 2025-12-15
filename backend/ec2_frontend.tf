@@ -9,35 +9,24 @@ resource "aws_launch_template" "frontend" {
   }
 
   user_data = base64encode(<<EOF
-#!/bin/bash
-yum update -y
-yum install nginx -y
-yum install nodejs npm -y
+            #!/bin/bash
+            yum update -y
+            yum install nginx -y
 
-npm install -g @angular/cli
-
-systemctl start nginx
-systemctl enable nginx
-# install git
-yum install git -y
-git --version
-# clone the application
-git clone https://github.com/mohammedhashim790/formbuilder.git
-# ls directory
-ls
-
-cd formbuilder/frontend
-npm install
-ng build
-
-cp -r /dist/frontend/browser /usr/share/nginx/html
-
-
-
-# Nginx default server (for time-being ONLY)
-# /usr/share/nginx/html
-systemctl enable nginx
-EOF
+            systemctl start nginx
+            systemctl enable nginx
+            # install git
+            yum install git -y
+            git --version
+            # clone the application
+            git clone https://github.com/mohammedhashim790/formbuilder.git
+            # ls directory
+            ls
+            cp -r /formbuilder/frontend/dist/frontend/browser/* /usr/share/nginx/html
+            # Nginx default server (for time-being ONLY)
+            # /usr/share/nginx/html
+            systemctl restart nginx
+            EOF
   )
 
   tag_specifications {
