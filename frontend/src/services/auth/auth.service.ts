@@ -1,14 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthManager} from '../../core/auth/AuthManager';
+import {url} from '../utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-
-  url: string = "/api/"
 
   private authManager: AuthManager = inject(AuthManager);
 
@@ -18,22 +17,22 @@ export class AuthService {
 
 
   signIn(data: { email: string, password: string }): Promise<any> {
-    return this.http.post(this.url + 'auth/login', data).toPromise().then((res: any) => {
+    return this.http.post(url + 'auth/login', data).toPromise().then((res: any) => {
       this.authManager.clear();
       this.authManager.set(res);
 
       return {
-        message:'success'
+        message: 'success'
       }
     });
   }
 
   signUp(data: { email: string, password: string }): Promise<any> {
-    return this.http.post(this.url + 'auth/signup', data).toPromise();
+    return this.http.post(url + 'auth/signup', data).toPromise();
   }
 
-  logout():Promise<void> {
-    return this.http.post(this.url + 'auth/logout', {}, {
+  logout(): Promise<void> {
+    return this.http.post(url + 'auth/logout', {}, {
       headers: {
         authorization: 'Bearer ' + (this.authManager.user.at ?? "")
       }

@@ -6,15 +6,14 @@ import {url} from '../utils';
 @Injectable({
   providedIn: 'root',
 })
-export class EntryService {
-
+export class RecordService {
 
   constructor(private http: HttpClient, private authManager: AuthManager) {
   }
 
-  list(formId: string) {
-    return this.http.get(url + "record/" + formId).toPromise().then((res) => (res as Array<any>).map((item) => item));
-  }
 
+  create(data: any): Promise<any> {
+    return this.http.post(url + 'record/', data).toPromise().then((res) => res as any);
+  }
 
 }

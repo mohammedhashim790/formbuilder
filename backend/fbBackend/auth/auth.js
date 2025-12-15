@@ -11,7 +11,9 @@ const {CognitoJwtVerifier} = require('aws-jwt-verify');
 
 
 const client = new CognitoIdentityProviderClient({
-    region: process.env.AWS_REGION,
+    region: process.env.AWS_REGION, credentials: {
+        accessKeyId: process.env.ACCESS_TOKEN, secretAccessKey: process.env.SECRET_TOKEN
+    }
 });
 
 const UserPoolId = process.env.COGNITO_USER_POOL_ID;
@@ -50,7 +52,7 @@ async function signUpUser({email, password}) {
         ClientId, Username: email, Password: password, UserAttributes: [{Name: 'email', Value: email}],
     });
     const res = await client.send(cmd);
-    await client.send(new AdminConfirmSignUpCommand({
+    const res1 = await client.send(new AdminConfirmSignUpCommand({
         UserPoolId, Username: email,
     }))
     return res;

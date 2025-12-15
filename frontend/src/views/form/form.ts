@@ -13,6 +13,7 @@ import {
 import {FieldFromDb, FormFromDb} from '../../models/form.model';
 import {FormService} from '../../services/form/form.service';
 import {ActivatedRoute} from '@angular/router';
+import {RecordService} from '../../services/record/record.service';
 
 
 const atLeastOneChecked: ValidatorFn = (ctrl: AbstractControl): ValidationErrors | null => {
@@ -37,7 +38,7 @@ export class Form {
   protected formGroup!: FormGroup;
   protected submitted = false;
 
-  constructor(private fb: FormBuilder, private formService: FormService, private cdr: ChangeDetectorRef, private ar: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private formService: FormService, private recordService: RecordService, private cdr: ChangeDetectorRef, private ar: ActivatedRoute) {
     this.read(this.ar.snapshot.queryParamMap.get('id') ?? '');
 
   }
@@ -91,10 +92,11 @@ export class Form {
       }
     }
 
-    console.log(Object.fromEntries(userMap.entries()));
+    this.recordService.create(Object.fromEntries(userMap.entries()));
 
     this.submitted = true;
     this.formGroup.reset(this.buildForm(this.sampleResponse).getRawValue());
+
   }
 
   private buildForm(def: FormFromDb): FormGroup {

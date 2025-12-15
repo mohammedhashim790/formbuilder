@@ -3,8 +3,6 @@ const express = require('express');
 const cors = require('cors');
 
 const formsRouter = require('./routes/forms');
-const formConfigsRouter = require('./routes/formConfigs');
-const fieldsRouter = require('./routes/fields');
 const assetsRouter = require('./routes/assets');
 const rulesRouter = require('./routes/rules');
 const recordsRouter = require('./routes/records');
