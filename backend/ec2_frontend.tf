@@ -1,18 +1,21 @@
 resource "aws_launch_template" "frontend" {
   name_prefix   = "${var.project_name}-frontend-"
   image_id      = data.aws_ami.amazon_linux.id
-  instance_type = "t3.micro"
+  instance_type = "t3.nano"
+
+  key_name = "debug-key"
+
 
   network_interfaces {
     associate_public_ip_address = true
     security_groups             = [aws_security_group.ec2_frontend.id]
   }
 
-  user_data = base64encode(<<EOF
+  user_data = base64encode(<<-EOF
             #!/bin/bash
             yum update -y
             yum install nginx -y
-
+            yum install ec2-instance-connect -y
             systemctl start nginx
             systemctl enable nginx
             # install git
@@ -64,6 +67,13 @@ resource "aws_lb_target_group" "frontend" {
     path = "/"
   }
 }
+
+# resource "aws_lb_target_group_attachment" "attach" {
+#   target_group_arn = aws_lb_target_group.frontend.arn
+#   target_id        = aws_launch_template.frontend.id
+#   port             = 80
+# }
+
 
 resource "aws_autoscaling_group" "frontend" {
   name                = "${var.project_name}-frontend-asg"

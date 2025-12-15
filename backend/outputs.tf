@@ -25,6 +25,11 @@ output "cognito_user_pool_client" {
   value = aws_cognito_user_pool_client.client_app.id
 }
 
+output "alb_dns_name" {
+  description = "The DNS name of the Public Fronload balancer"
+  value       = aws_lb.public.dns_name
+}
+
 
 
 
