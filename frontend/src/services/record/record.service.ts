@@ -16,4 +16,9 @@ export class RecordService {
     return this.http.post(url + 'record/', data).toPromise().then((res) => res as any);
   }
 
+  checkIn(id: any): Promise<any> {
+    return this.http.post(url + 'record/checkin/' + id, {}).toPromise().then((res) => res as any);
+  }
+
+
 }

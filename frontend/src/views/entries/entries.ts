@@ -15,10 +15,12 @@ import {
   MatTable
 } from '@angular/material/table';
 import {DatePipe} from '@angular/common';
+import {MatButton} from '@angular/material/button';
+import {RecordService} from '../../services/record/record.service';
 
 @Component({
   selector: 'app-entries',
-  imports: [MatDivider, MatListItemTitle, MatTable, MatHeaderCell, MatHeaderCellDef, MatCell, MatCellDef, MatColumnDef, MatHeaderRow, MatRow, MatHeaderRowDef, MatRowDef],
+  imports: [MatDivider, MatListItemTitle, MatTable, MatHeaderCell, MatHeaderCellDef, MatCell, MatCellDef, MatColumnDef, MatHeaderRow, MatRow, MatHeaderRowDef, MatRowDef, MatButton],
   templateUrl: './entries.html',
   styleUrl: './entries.css',
 })
@@ -30,7 +32,7 @@ export class Entries {
   protected headers: string[] = [];
 
 
-  constructor(private entryService: EntryService, private cdr: ChangeDetectorRef, private ar: ActivatedRoute) {
+  constructor(private entryService: EntryService, private cdr: ChangeDetectorRef, private ar: ActivatedRoute, private recordService: RecordService) {
     this.read(this.ar.snapshot.queryParamMap.get('id') ?? '');
 
   }
@@ -40,13 +42,15 @@ export class Entries {
     this.entryService.list(this.formId).then((res) => {
 
       this.records = res.map(item => ({
+        id: item.id, ...(item.record ?? {}),
         checkedIn: (item.checkedIn ?? false) ? '✓' : '',
-        checkedInAt: new DatePipe('en').transform(item.checkedInAt ?? null, 'medium'), ...(item.record ?? {})
+        checkedInAt: new DatePipe('en').transform(item.checkedInAt ?? null, 'medium'),
       }));
       if (this.records.length > 0) {
         const recordWithMostColumns = this.records.reduce((max, curr) => Object.keys(curr).length > Object.keys(max).length ? curr : max);
-
         this.headers = Object.keys(recordWithMostColumns);
+        this.headers.splice(this.headers.indexOf('id'), 1);
+        this.headers.push('actions')
 
       } else {
         this.headers = [];
@@ -54,6 +58,12 @@ export class Entries {
       this.cdr.detectChanges();
 
     });
+  }
+
+
+  checkInUser(recordId: string) {
+    console.log(recordId);
+    this.recordService.checkIn(recordId).then((_) => window.location.reload());
   }
 
   protected readonly Array = Array;
