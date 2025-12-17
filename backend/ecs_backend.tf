@@ -109,7 +109,8 @@ resource "aws_ecs_task_definition" "form-builder_service" {
         { name = "REDIS_HOST", value = aws_elasticache_replication_group.redis.primary_endpoint_address },
         { name = "REDIS_PORT", value = tostring(aws_elasticache_replication_group.redis.port) },
         { name = "COGNITO_USER_POOL_ID", value = aws_cognito_user_pool.cognito.id },
-        { name = "COGNITO_CLIENT_ID", value = aws_cognito_user_pool_client.client_app.id }
+        { name = "COGNITO_CLIENT_ID", value = aws_cognito_user_pool_client.client_app.id },
+        { name = "S3_BUCKET", value = aws_s3_bucket.static.bucket_domain_name }
       ]
     }
   ])
