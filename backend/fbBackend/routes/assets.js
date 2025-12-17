@@ -4,6 +4,7 @@ const {
     PutCommand, GetCommand, DeleteCommand,
 } = require('@aws-sdk/lib-dynamodb');
 const {docClient} = require('../core/dynamo');
+const { get } = require('express/lib/response');
 
 const router = express.Router();
 const TABLE = process.env.ASSETS_TABLE;
@@ -32,13 +33,15 @@ router.get('/:id', async (req, res, next) => {
     try {
         const result = await docClient.send(new GetCommand({
             TableName: TABLE, Key: {id: req.params.id},
-        }),);
+        }));
 
         if (!result.Item) {
             return res.status(404).json({error: 'Asset not found'});
         }
 
-        res.json(result.Item);
+        const url = await getSignedURL(result.Item.key);
+
+        res.json({...result.Item, url});
     } catch (err) {
         next(err);
     }
