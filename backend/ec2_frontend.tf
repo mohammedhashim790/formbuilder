@@ -1,7 +1,7 @@
 resource "aws_launch_template" "frontend" {
   name_prefix   = "${var.project_name}-frontend-"
   image_id      = data.aws_ami.amazon_linux.id
-  instance_type = "t3.nano"
+  instance_type = "t3.micro"
 
   key_name = "debug-key"
 
